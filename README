@@ -1,0 +1,10 @@
+Crawls indeed.com resumes.
+
+To install-
+gem install requestmanager
+gem install indeedparser
+gem install indeedcrawler
+
+To use-
+i = IndeedCrawler.new("search term", "location", "/path/to/proxies", [min wait, max wait], # of browsers)
+i.collect_it_all
