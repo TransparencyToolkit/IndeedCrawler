@@ -2,6 +2,7 @@ require 'json'
 require 'uri'
 require 'requestmanager'
 require 'nokogiri'
+require 'indeedparser'
 
 class IndeedCrawler
   def initialize(search_query, location, proxy_list, wait_time, browser_num)
@@ -64,9 +65,17 @@ class IndeedCrawler
   def parse_resumes
     @all_resume_links.each do |link|
       resume = load_restart_page(link, 0)
-      binding.pry
-      # TODO: Parse resume
-      # TODO: Add to output- by job listing, arr
+
+      begin
+        # Parse resume and add to results
+        i = IndeedParser.new(resume, link, {time_scraped: Time.now})
+        results = JSON.parse(i.get_results_by_job)
+      
+        results.each do |result|
+          @output.push(result)
+        end
+      rescue
+      end
     end
   end
 
@@ -90,8 +99,3 @@ class IndeedCrawler
     return JSON.pretty_generate(@output)
   end
 end
-
-# TODO: Make gem
-
-i = IndeedCrawler.new("xkeyscore", nil, "/home/shidash/superproxylist", [0.2, 0.3], 1)
-i.collect_it_all
