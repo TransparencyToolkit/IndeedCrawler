@@ -36,7 +36,7 @@ class IndeedCrawler
 
     # Get each profile link
     profiles.each do |profile|
-      @all_resume_links.push("http://indeed.com/"+profile.xpath(".//a[@class='app_link']")[0]['href'])
+      @all_resume_links.push("http://indeed.com"+profile.xpath(".//a[@class='app_link']")[0]['href'])
     end
 
     # Navigate to next page if there's a class to do that
@@ -65,7 +65,7 @@ class IndeedCrawler
   def parse_resumes
     @all_resume_links.each do |link|
       resume = load_restart_page(link, 0)
-
+      
       begin
         # Parse resume and add to results
         i = IndeedParser.new(resume, link, {time_scraped: Time.now})
