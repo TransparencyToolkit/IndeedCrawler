@@ -6,5 +6,10 @@ gem install indeedparser
 gem install indeedcrawler
 
 To use-
-i = IndeedCrawler.new("search term", "location", "/path/to/proxies", [min wait, max wait], # of browsers)
+i = IndeedCrawler.new("search term", "location", "/path/to/proxies", [min wait, max wait], # of browsers, crawler manager hash)
 i.collect_it_all
+
+The crawler manager hash has the following attributes-
+{crawler_manager_url: "127.0.0.1:9506",
+selector_id: "selector id here"}
+If nil is passed, results are returned in one large chunk as normal.
