@@ -107,6 +107,11 @@ class IndeedCrawler
                              Curl::PostField.content('results', JSON.pretty_generate(results)))
   end
 
+  # Get the JSON of results
+  def get_json
+    return JSON.pretty_generate(@output)
+  end
+
   # Get all the profile links
   def collect_it_all
     # Generate URL
@@ -124,6 +129,5 @@ class IndeedCrawler
 
     # Close browsers when done and return results
     @requests.close_all_browsers
-    return JSON.pretty_generate(@output)
   end
 end
