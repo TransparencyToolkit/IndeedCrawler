@@ -109,10 +109,12 @@ class IndeedCrawler
 
   # Report Harvester status message
   def report_status(status_msg)
-    curl_url = @cm_url+"/update_status"
-    c = Curl::Easy.http_post(curl_url,
-                             Curl::PostField.content('selector_id', @selector_id),
-                             Curl::PostField.content('status_message', status_msg))
+    if @cm_url
+      curl_url = @cm_url+"/update_status"
+      c = Curl::Easy.http_post(curl_url,
+                               Curl::PostField.content('selector_id', @selector_id),
+                               Curl::PostField.content('status_message', status_msg))
+    end
   end
 
   # Get the JSON of results
