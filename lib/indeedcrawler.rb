@@ -76,8 +76,8 @@ class IndeedCrawler
         i = IndeedParser.new(resume, link, {time_scraped: Time.now})
         results = JSON.parse(i.get_results_by_job)
         report_results(results, link)
-      rescue
-        
+      rescue => e
+        report_status("Error in parsing " + link+": "+e.to_s)
       end
     end
   end
@@ -107,6 +107,14 @@ class IndeedCrawler
                              Curl::PostField.content('results', JSON.pretty_generate(results)))
   end
 
+  # Report Harvester status message
+  def report_status(status_msg)
+    curl_url = @cm_url+"/update_status"
+    c = Curl::Easy.http_post(curl_url,
+                             Curl::PostField.content('selector_id', @selector_id),
+                             Curl::PostField.content('status_message', status_msg))
+  end
+
   # Get the JSON of results
   def get_json
     return JSON.pretty_generate(@output)
@@ -129,5 +137,6 @@ class IndeedCrawler
 
     # Close browsers when done and return results
     @requests.close_all_browsers
+    report_status("Finished collecting data for selector "+@search_query.to_s+" "+@location.to_s)
   end
 end
